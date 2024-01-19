@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Record>
+
+<div class="row">
+    <div class="col-sm-2">
+        <form asp-action="Filter" asp-controller="Home" method="post">
+            <div class="form-group">
+                <label>Category:</label>
+                <select name="filter" class="form-control"
+                        asp-items="@(new SelectList(ViewBag.Categories,
+                        "CategoryId", "Name", ViewBag.Filters.CategoryId))">
+                    <option value="all">All</option>    
+                </select>
+            </div>
+            <div class="form-group mt-2">
+                <label>Warehouse:</label>
+                <select name="filter" class="form-control"
+                    asp-items="@(new SelectList(ViewBag.Warehouses,
+                    "WarehouseId", "Name", ViewBag.Filters.WarehouseId))">
+                    <option value="all">All</option>
+                </select>
+            </div>
+            <div class="mt-2">
+            <button type="submit" class="btn btn-info">Filter</button>
+            <a asp-action="Index" asp-controller="Home" asp-route-id="" class="btn btn-secondary">Clear</a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="col-sm-10">
+        <a asp-action="Alter" asp-controller="Record" class="btn btn-primary mb-2">Add Record</a>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Record Code</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Warehouse</th>
+                    <th>Quantity</th>
+                    <th class="w-25"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var record in Model)
+                {
+                    <tr>
+                        <td>@record.Code</td>
+                        <td>@record.ProductName</td>
+                        <td>@record.Category.Name</td>
+                        <td>@record.Price</td>
+                        <td>@record.Warehouse.Name</td>
+                        <td>@record.Quantity</td>
+                        <td>
+                            <a asp-action="AlterWithId" asp-controller="Record" class="btn btn-warning btn-sm"
+                                asp-route-id="@record.RecordId">Edit</a>
+
+                            <a asp-action="Delete" asp-controller="Record" class="btn btn-danger btn-sm"
+                                asp-route-id="@record.RecordId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
